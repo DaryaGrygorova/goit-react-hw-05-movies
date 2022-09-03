@@ -4,7 +4,7 @@ import 'modern-normalize';
 export const GlobalStyle = createGlobalStyle`
 body {
   margin: 0;
-  padding: 20px;
+  padding: 0;
   font-family: 'Roboto', sans-serif;
   font-size: 24px;
   color: #010101;}
