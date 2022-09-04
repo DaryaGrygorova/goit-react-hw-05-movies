@@ -10,6 +10,7 @@ export const SCHeader = styled.header`
   height: 64px;
   background-color: ${p => p.theme.colors.primary};
   box-shadow: 0  5px 7px 0 #b8b2b8;
+  z-index: 100;
 `;
 
 export const SCNavLink = styled(NavLink)`

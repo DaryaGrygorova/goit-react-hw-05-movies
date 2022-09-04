@@ -11,7 +11,8 @@ border-radius: ${p => p.theme.radii.lg};
 text-decoration: none;
 color: ${p => p.theme.colors.white};
 background-color:  ${p => p.theme.colors.primary};
-opacity: 0.7;
+opacity: 0.4;
+transition: opacity 250ms cubic-bezier(0.4, 0, 0.2, 1);
 
 :hover,
 :focus {
@@ -42,7 +43,8 @@ overflow: hidden;
 export const SCNavBar = styled.div`
 padding: ${p => p.theme.space[2]}px;
 padding-bottom: 0;
-/* box-shadow: 0 4px 5px 0 #b8b2b8; */
+ border-bottom: 0.5px solid rgba(77, 75, 77, 0.2);
+ border-top: 0.5px solid rgba(77, 75, 77, 0.2);
 `;
 
 export const SCNavLink = styled(NavLink)`
@@ -64,7 +66,7 @@ color: ${p => p.theme.colors.accent};
 
  ::after {
     position: absolute;
-    bottom: 0;
+    bottom: -1px;
     left: 0;
     content: '';
     display: block;
@@ -72,7 +74,7 @@ color: ${p => p.theme.colors.accent};
     height: 4px;
    transform: scale(0);
     background-color: ${p => p.theme.colors.accent};
-    translate: transform 250ms;
+    transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
 };
 
   :hover:not(.active),

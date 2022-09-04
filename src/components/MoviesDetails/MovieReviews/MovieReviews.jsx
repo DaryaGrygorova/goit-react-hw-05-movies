@@ -36,7 +36,7 @@ const MovieReviews = () => {
               flexWrap="wrap"
               alignItem="center"
             >
-              <IoPersonCircle size="50px" />
+              <IoPersonCircle size="50px" color="#9a999b" />
               <Box>
                 <SCTitle>{author}</SCTitle>
                 <Box display="flex" gridGap="15px" mb={4}>

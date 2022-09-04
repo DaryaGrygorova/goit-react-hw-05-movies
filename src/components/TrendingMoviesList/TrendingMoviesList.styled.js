@@ -38,3 +38,18 @@ position: relative;
     transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
   }
 `;
+
+export const SCMovieList = styled.ul`
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  padding-top: ${p => p.theme.space[4]}px;
+  
+  li {
+    width: calc((100% - 45px) / 4);
+    display: flex;
+    align-items: stretch;
+    gap: 15px;
+  border-radius: 8px;
+  }
+`;

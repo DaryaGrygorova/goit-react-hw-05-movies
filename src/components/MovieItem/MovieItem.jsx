@@ -1,12 +1,13 @@
-import { GiFilmSpool } from 'react-icons/gi';
 import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { SCNavLink } from './MovieItem.styled';
+import { IMAGE_URL } from 'service-api/MoviesAPI';
+
+import { SCNavLink, SCImageWrapper, SCText } from './MovieItem.styled';
 
 const MovieItem = ({ movie }) => {
   const ROUTE_HOME_PAGE = process.env.REACT_APP_ROUTE_HOME_PAGE;
-  const { id, title } = movie;
+  const { id, title, poster_path } = movie;
   const location = useLocation();
 
   return (
@@ -15,8 +16,10 @@ const MovieItem = ({ movie }) => {
       key={id}
       state={location}
     >
-      <GiFilmSpool size="24" />
-      {title || 'No name film'}
+      <SCImageWrapper>
+        <img src={`${IMAGE_URL}w500${poster_path}`} alt={title} />
+      </SCImageWrapper>
+      <SCText>{title || 'No name film'}</SCText>
     </SCNavLink>
   );
 };
@@ -24,6 +27,7 @@ MovieItem.propTypes = {
   movie: {
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
+    poster_path: PropTypes.string.isRequired,
   }.isRequired,
 };
 export default MovieItem;

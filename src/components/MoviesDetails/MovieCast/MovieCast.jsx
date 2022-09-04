@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { getMovieCastById, IMAGE_URL } from 'service-api/MoviesAPI';
 import { Box } from 'components/Box';
 import Loader from '../../Loader';
-import placeholderIMG from '../../../images/placeholder.webp';
+import placeholderIMG from '../../../images/unknown_person.png';
 
 import {
   SCImageWrapper,
@@ -42,14 +42,7 @@ const MovieCast = () => {
             known_for_department,
             character,
           }) => (
-            <Box
-              key={cast_id}
-              as="li"
-              display="flex"
-              gridGap="15px"
-              alignItems="center"
-              mb={5}
-            >
+            <Box key={cast_id} as="li">
               <SCImageWrapper>
                 {profile_path ? (
                   <img src={`${IMAGE_URL}w500${profile_path}`} alt={name} />

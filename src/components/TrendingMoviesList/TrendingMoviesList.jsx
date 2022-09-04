@@ -6,7 +6,7 @@ import MovieItem from 'components/MovieItem';
 import { getTrendingMovies } from '../../service-api/MoviesAPI';
 import { Box } from 'components/Box';
 
-import { SCTitle } from './TrendingMoviesList.styled';
+import { SCTitle, SCMovieList } from './TrendingMoviesList.styled';
 
 const TrendingMoviesList = () => {
   const [trendingMovies, setTrendingMovies] = useState([]);
@@ -29,13 +29,13 @@ const TrendingMoviesList = () => {
     <Box>
       <SCTitle>Trending today (Top-20)</SCTitle>
       {!!trendingMovies?.length && (
-        <ul>
+        <SCMovieList>
           {trendingMovies.map(movie => (
             <Box as="li" key={movie.id}>
               <MovieItem movie={movie} />
             </Box>
           ))}
-        </ul>
+        </SCMovieList>
       )}
     </Box>
   );
