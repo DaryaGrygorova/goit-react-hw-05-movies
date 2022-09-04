@@ -16,7 +16,7 @@ const MovieReviews = () => {
   useEffect(() => {
     movieId && setIsLoading(true);
 
-    getMovieReviewsById
+    getMovieReviewsById(movieId)
       .then(({ results }) => {
         setMovieReviews(results);
       })

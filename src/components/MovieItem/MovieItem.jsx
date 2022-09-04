@@ -21,9 +21,9 @@ const MovieItem = ({ movie }) => {
   );
 };
 MovieItem.propTypes = {
-  movie: PropTypes.object.shape({
+  movie: {
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
-  }).isRequired,
+  }.isRequired,
 };
 export default MovieItem;
