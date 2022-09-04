@@ -1,7 +1,6 @@
 import styled from 'styled-components';
-import { Form, Field } from 'formik';
 
-export const StyledForm = styled(Form)`
+export const StyledForm = styled.form`
   display: flex;
   align-items: center;
   width: 100%;
@@ -13,19 +12,7 @@ export const StyledForm = styled(Form)`
   overflow: hidden;
 `;
 
-export const Label = styled.label`
- position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  clip-path: inset(50%);
-  border: 0;
- `;
-
-export const Input = styled(Field)`
+export const Input = styled.input`
   display: inline-block;
   height: 100%;
   width: 100%;

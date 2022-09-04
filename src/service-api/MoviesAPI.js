@@ -57,33 +57,7 @@ class MoviesApiService extends Component {
       });
   };
 
-  getMoviesById= async (id) => {
-    const searchParam = new URLSearchParams({
-      api_key: this._apiKey,
-    });
-
-    const pathName = '/movie'
-    
-     return axios
-      .get(`${this._URL_ORIGIN}${pathName}/${id}?${searchParam}`)
-      .then(response => {
-        if (response.status !== 200) {
-          return Promise.reject(`Error: ${response.message}`);
-        }
-
-        if (response.data.total_results === 0) {
-          return Promise.reject(
-            'Sorry, no matches found. Please try again.'
-          );
-        }
-        return response.data;
-      })
-      .catch(err => {
-        return Promise.reject(err);
-      });
-  };
-  
-  getMovieCast= async (id) => {
+    getMovieDetails= async (searchPath) => {
     const searchParam = new URLSearchParams({
       api_key: this._apiKey,
     });
@@ -91,7 +65,7 @@ class MoviesApiService extends Component {
     const pathName = '/movie/'
     
      return axios
-      .get(`${this._URL_ORIGIN}${pathName}/${id}/credits?${searchParam}`)
+      .get(`${this._URL_ORIGIN}${pathName}/${searchPath}?${searchParam}`)
       .then(response => {
         if (response.status !== 200) {
           return Promise.reject(`Error: ${response.message}`);
@@ -99,7 +73,7 @@ class MoviesApiService extends Component {
 
         if (response.data.total_results === 0) {
           return Promise.reject(
-            "Sorry, we don't have a cast list."
+            "Unfortunately, we don't have more details about this movie..."
           );
         }
         return response.data;
@@ -108,32 +82,6 @@ class MoviesApiService extends Component {
         return Promise.reject(err);
       });
   };
-
-  getMovieReviews= async (id) => {
-    const searchParam = new URLSearchParams({
-      api_key: this._apiKey,
-    });
-    const pathName = '/movie'
-
-     return axios
-      .get(`${this._URL_ORIGIN}${pathName}/${id}/reviews?${searchParam}`)
-      .then(response => {
-        if (response.status !== 200) {
-          return Promise.reject(`Error: ${response.message}`);
-        }
-
-        if (response.data.total_results === 0) {
-          return Promise.reject(
-            "Sorry, we don't have a reviews."
-          );
-        }
-        return response.data;
-      })
-      .catch(err => {
-        return Promise.reject(err);
-      });
-  };
-   
 };
 
 const moviesAPI = new MoviesApiService();

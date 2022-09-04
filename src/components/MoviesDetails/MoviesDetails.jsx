@@ -9,7 +9,7 @@ import Loader from '../Loader';
 import placeholderIMG from '../../images/placeholder.webp';
 
 import {
-  SCButton,
+  SCLink,
   SCImageWrapper,
   SCTitle,
   SCSubTitle,
@@ -19,42 +19,47 @@ import {
 } from './MoviesDetails.styled';
 
 const MoviesDetails = () => {
+  const ROUTE_HOME_PAGE = process.env.REACT_APP_ROUTE_HOME_PAGE;
   const { pathname, state } = useLocation();
   const [movieData, setMovieData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   const { poster_path, title, vote_average, overview, genres } = movieData;
-  const historyLocation = !!state ? `${state?.pathname}${state?.search}` : '';
-  const moviesID = pathname.slice(32);
+
+  const getSearchPath = () => {
+    if (pathname.includes('cast')) {
+      return pathname?.slice(32, -5);
+    }
+    if (pathname.includes('reviews')) {
+      return pathname?.slice(32, -8);
+    }
+    return pathname?.slice(32);
+  };
+
+  const searchPath = getSearchPath() || state?.pathname?.slice(32);
 
   useEffect(() => {
-    const getMovieData = id => {
+    const getMovieData = searchPath => {
       moviesAPI
-        .getMoviesById(id)
+        .getMovieDetails(searchPath)
         .then(results => {
           setMovieData(results);
         })
         .catch(err => toast.error(err))
         .finally(setIsLoading(false));
     };
-    if (moviesID) {
+    if (searchPath) {
       setIsLoading(true);
-      getMovieData(
-        Number(moviesID)
-          ? moviesID
-          : Number(moviesID.slice(0, -5))
-          ? moviesID.slice(0, -5)
-          : moviesID.slice(0, -8)
-      );
+      getMovieData(searchPath);
     }
-  }, [moviesID]);
+  }, [searchPath]);
 
   return (
     <>
-      <SCButton type="button" href={historyLocation}>
+      <SCLink to={state || `/${ROUTE_HOME_PAGE}`}>
         <FaArrowLeft size="24" />
         Go back
-      </SCButton>
+      </SCLink>
       {isLoading && <Loader />}
       {!movieData?.length && (
         <>
@@ -62,7 +67,7 @@ const MoviesDetails = () => {
             <SCImageWrapper>
               {poster_path ? (
                 <img
-                  src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
+                  src={`https://image.tmdb.org/t/p/w400/${poster_path}`}
                   alt={title}
                 />
               ) : (
@@ -87,16 +92,20 @@ const MoviesDetails = () => {
             Additional information
             <Box as="ul" display="flex" gridGap="15px">
               <Box as="li">
-                <SCNavLink to="cast">Cast</SCNavLink>
+                <SCNavLink state={state} to="cast">
+                  Cast
+                </SCNavLink>
               </Box>
               <Box as="li">
-                <SCNavLink to="reviews">Reviews</SCNavLink>
+                <SCNavLink state={state} to="reviews">
+                  Reviews
+                </SCNavLink>
               </Box>
             </Box>
           </SCNavBar>
 
           <Box>
-            <Suspense>
+            <Suspense fallback={<Loader />}>
               <Outlet />
             </Suspense>
           </Box>

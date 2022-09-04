@@ -1,38 +1,38 @@
-import { Formik } from 'formik';
 import { toast } from 'react-toastify';
 
 import { BsSearch } from 'react-icons/bs';
 
-import { StyledForm, Label, Input, Button } from './SearchForm.styled';
+import { StyledForm, Input, Button } from './SearchForm.styled';
 
-const SearchForm = ({ onFormSubmit }) => {
-  const onSubmitHandle = ({ searchQuery }) => {
-    if (searchQuery.trim() === '') {
+const SearchForm = ({ value, onChange, onFormSubmit }) => {
+  const onSubmitHandle = e => {
+    e.preventDefault();
+
+    const query = e.target.elements.searchQuery.value;
+
+    if (query.trim() === '') {
       toast.warning('Enter search query!');
     }
-    onFormSubmit(searchQuery);
+
+    onFormSubmit(query);
   };
 
   return (
-    <Formik initialValues={{ searchQuery: '' }} onSubmit={onSubmitHandle}>
-      <StyledForm autoComplete="off">
-        <Button type="submit">
-          <BsSearch aria-label="Search" />
-        </Button>
+    <StyledForm autoComplete="off" onSubmit={onSubmitHandle}>
+      <Button type="submit">
+        <BsSearch aria-label="Search" />
+      </Button>
 
-        <Label htmlFor="searchQuery" />
-
-        <Input
-          id="searchQuery"
-          type="text"
-          name="searchQuery"
-          // value={value}
-          placeholder="Search movie"
-          // onChange={e => onChange(e.target.value)}
-          autoFocus
-        />
-      </StyledForm>
-    </Formik>
+      <Input
+        id="searchQuery"
+        type="text"
+        name="searchQuery"
+        value={value}
+        placeholder="Search movie"
+        onChange={e => onChange(e.target.value)}
+        autoFocus
+      />
+    </StyledForm>
   );
 };
 

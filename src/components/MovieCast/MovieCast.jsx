@@ -19,23 +19,30 @@ const MovieCast = () => {
   const [movieCast, setMovieCast] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const moviesID = pathname.slice(32, -5);
+  const getSearchPath = () => {
+    if (pathname.includes('cast')) {
+      return pathname?.slice(32, -4) + 'credits';
+    }
+    return pathname?.slice(32);
+  };
+
+  const searchPath = getSearchPath();
 
   useEffect(() => {
-    const getMovieCast = id => {
+    const getMovieCast = searchPath => {
       moviesAPI
-        .getMovieCast(id)
+        .getMovieDetails(searchPath)
         .then(results => {
           setMovieCast(results);
         })
         .catch(err => console.log(err))
         .finally(setIsLoading(false));
     };
-    if (Number(moviesID)) {
+    if (searchPath) {
       setIsLoading(true);
-      getMovieCast(moviesID);
+      getMovieCast(searchPath);
     }
-  }, [moviesID]);
+  }, [searchPath]);
 
   return (
     <SCCastList>
@@ -60,7 +67,7 @@ const MovieCast = () => {
               <SCImageWrapper>
                 {profile_path ? (
                   <img
-                    src={`https://image.tmdb.org/t/p/w500/${profile_path}`}
+                    src={`https://image.tmdb.org/t/p/w500${profile_path}`}
                     alt={name}
                   />
                 ) : (

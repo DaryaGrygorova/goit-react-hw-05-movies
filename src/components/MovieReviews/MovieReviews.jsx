@@ -13,24 +13,23 @@ const MovieReviews = () => {
   const [movieReviews, setMovieReviews] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const moviesID = pathname.slice(32, -8);
+  const searchPath = pathname.slice(32);
 
   useEffect(() => {
-    const getMovieReviews = id => {
+    const getMovieReviews = searchPath => {
       moviesAPI
-        .getMovieReviews(id)
+        .getMovieDetails(searchPath)
         .then(({ results }) => {
           setMovieReviews(results);
-          console.log(results);
         })
         .catch(err => console.log(err))
         .finally(setIsLoading(false));
     };
-    if (Number(moviesID)) {
+    if (searchPath) {
       setIsLoading(true);
-      getMovieReviews(moviesID);
+      getMovieReviews(searchPath);
     }
-  }, [moviesID]);
+  }, [searchPath]);
 
   return (
     <SCReviews>

@@ -1,7 +1,7 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import styled from "styled-components";
 
-export const SCButton = styled.a`
+export const SCLink = styled(Link)`
 display: flex;
 gap: 10px;
 width: max-content;
@@ -69,7 +69,7 @@ color: ${p => p.theme.colors.accent};
     content: '';
     display: block;
     width: 100%;
-    height: 2px;
+    height: 4px;
    transform: scale(0);
     background-color: ${p => p.theme.colors.accent};
     translate: transform 250ms;

@@ -1,4 +1,5 @@
 import { Box } from 'components/Box';
+import Loader from 'components/Loader';
 import { Suspense } from 'react';
 import { Outlet } from 'react-router-dom';
 
@@ -9,7 +10,7 @@ const Layout = () => {
     <Box mt={6}>
       <AppBar />
 
-      <Suspense>
+      <Suspense fallback={<Loader />}>
         <Outlet />
       </Suspense>
     </Box>

@@ -10,23 +10,24 @@ import moviesAPI from 'service-api/MoviesAPI';
 import { useSearchParams } from 'react-router-dom';
 
 const MoviesSearch = () => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
+  const query = searchParams.get('query') || '';
+
+  const [searchQuery, setSearchQuery] = useState(query);
   const [movies, setMovies] = useState([]);
   const [page, setPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
-  const [searchParams, setSearchParams] = useSearchParams();
 
   useEffect(() => {
     setPage(1);
     setMovies([]);
-    setSearchParams(searchQuery ? { query: searchQuery } : {});
   }, [searchQuery, setSearchParams]);
 
   useEffect(() => {
     const getMovies = async () => {
       try {
         const data = await moviesAPI.getMoviesBySearchQuery(searchQuery, page);
-        setMovies(state => [...state, ...data.results]);
+        setMovies([...data.results]);
       } catch (err) {
         toast.error(err);
       } finally {
@@ -40,12 +41,20 @@ const MoviesSearch = () => {
     }
   }, [page, searchQuery]);
 
+  const onChangeQuery = query => {
+    setSearchParams({ query });
+  };
+
+  const onFormSubmit = query => {
+    setSearchQuery(query);
+  };
+
   return (
     <Box>
       <SearchForm
-        // value={filter}
-        // onChange={onChangeFilter}
-        onFormSubmit={setSearchQuery}
+        value={query}
+        onChange={onChangeQuery}
+        onFormSubmit={onFormSubmit}
       />
       {isLoading && <Loader />}
       {!!movies?.length && !isLoading && (
