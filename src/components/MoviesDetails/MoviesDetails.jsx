@@ -1,9 +1,9 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import { Outlet, useLocation, useParams } from 'react-router-dom';
 import { Suspense, useState, useEffect } from 'react';
 import { FaArrowLeft } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 
-import moviesAPI from 'service-api/MoviesAPI';
+import { getMovieDetailsById, IMAGE_URL } from 'service-api/MoviesAPI';
 import { Box } from 'components/Box';
 import Loader from '../Loader';
 import placeholderIMG from '../../images/placeholder.webp';
@@ -20,39 +20,23 @@ import {
 
 const MoviesDetails = () => {
   const ROUTE_HOME_PAGE = process.env.REACT_APP_ROUTE_HOME_PAGE;
-  const { pathname, state } = useLocation();
+  const { state } = useLocation();
+  const { movieId } = useParams();
   const [movieData, setMovieData] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   const { poster_path, title, vote_average, overview, genres } = movieData;
 
-  const getSearchPath = () => {
-    if (pathname.includes('cast')) {
-      return pathname?.slice(32, -5);
-    }
-    if (pathname.includes('reviews')) {
-      return pathname?.slice(32, -8);
-    }
-    return pathname?.slice(32);
-  };
-
-  const searchPath = getSearchPath() || state?.pathname?.slice(32);
-
   useEffect(() => {
-    const getMovieData = searchPath => {
-      moviesAPI
-        .getMovieDetails(searchPath)
-        .then(results => {
-          setMovieData(results);
-        })
-        .catch(err => toast.error(err))
-        .finally(setIsLoading(false));
-    };
-    if (searchPath) {
-      setIsLoading(true);
-      getMovieData(searchPath);
-    }
-  }, [searchPath]);
+    movieId && setIsLoading(true);
+
+    getMovieDetailsById(movieId)
+      .then(results => {
+        setMovieData(results);
+      })
+      .catch(err => toast.error(err))
+      .finally(setIsLoading(false));
+  }, [movieId]);
 
   return (
     <>
@@ -66,10 +50,7 @@ const MoviesDetails = () => {
           <Box as="article" display="flex" gridGap="15px" mt={5} mb={5}>
             <SCImageWrapper>
               {poster_path ? (
-                <img
-                  src={`https://image.tmdb.org/t/p/w400/${poster_path}`}
-                  alt={title}
-                />
+                <img src={`${IMAGE_URL}w400/${poster_path}`} alt={title} />
               ) : (
                 <img src={placeholderIMG} alt={title} />
               )}

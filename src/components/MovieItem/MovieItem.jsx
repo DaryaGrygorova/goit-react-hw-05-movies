@@ -1,6 +1,8 @@
-import { SCNavLink } from './MovieItem.styled';
 import { GiFilmSpool } from 'react-icons/gi';
 import { useLocation } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+import { SCNavLink } from './MovieItem.styled';
 
 const MovieItem = ({ movie }) => {
   const ROUTE_HOME_PAGE = process.env.REACT_APP_ROUTE_HOME_PAGE;
@@ -18,5 +20,10 @@ const MovieItem = ({ movie }) => {
     </SCNavLink>
   );
 };
-
+MovieItem.propTypes = {
+  movie: PropTypes.object.shape({
+    id: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+  }).isRequired,
+};
 export default MovieItem;

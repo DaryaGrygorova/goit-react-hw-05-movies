@@ -1,20 +1,19 @@
 import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
-
-import { GlobalStyle } from './GlobalStyle';
 import { ToastContainer } from 'react-toastify';
 
+import Loader from './Loader';
 import Layout from './Layout';
 
+import { GlobalStyle } from './GlobalStyle';
 import 'react-toastify/dist/ReactToastify.css';
-import Loader from './Loader';
 
 const Home = lazy(() => import('../Pages/Home'));
-const Movies = lazy(() => import('../Pages/Movies/Movies'));
+const Movies = lazy(() => import('../Pages/Movies'));
 const MoviesSearch = lazy(() => import('./MoviesSearch'));
 const MoviesDetails = lazy(() => import('./MoviesDetails'));
-const MovieCast = lazy(() => import('./MovieCast'));
-const MovieReviews = lazy(() => import('./MovieReviews'));
+const MovieCast = lazy(() => import('./MoviesDetails/MovieCast'));
+const MovieReviews = lazy(() => import('./MoviesDetails/MovieReviews'));
 
 export const App = () => {
   const ROUTE_HOME_PAGE = process.env.REACT_APP_ROUTE_HOME_PAGE;

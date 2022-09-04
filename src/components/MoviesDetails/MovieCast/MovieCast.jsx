@@ -1,10 +1,10 @@
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
-import moviesAPI from 'service-api/MoviesAPI';
+import { getMovieCastById, IMAGE_URL } from 'service-api/MoviesAPI';
 import { Box } from 'components/Box';
-import Loader from '../Loader';
-import placeholderIMG from '../../images/placeholder.webp';
+import Loader from '../../Loader';
+import placeholderIMG from '../../../images/placeholder.webp';
 
 import {
   SCImageWrapper,
@@ -15,34 +15,20 @@ import {
 } from './MovieCast.styled';
 
 const MovieCast = () => {
-  const { pathname } = useLocation();
+  const { movieId } = useParams();
   const [movieCast, setMovieCast] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const getSearchPath = () => {
-    if (pathname.includes('cast')) {
-      return pathname?.slice(32, -4) + 'credits';
-    }
-    return pathname?.slice(32);
-  };
-
-  const searchPath = getSearchPath();
-
   useEffect(() => {
-    const getMovieCast = searchPath => {
-      moviesAPI
-        .getMovieDetails(searchPath)
-        .then(results => {
-          setMovieCast(results);
-        })
-        .catch(err => console.log(err))
-        .finally(setIsLoading(false));
-    };
-    if (searchPath) {
-      setIsLoading(true);
-      getMovieCast(searchPath);
-    }
-  }, [searchPath]);
+    movieId && setIsLoading(true);
+
+    getMovieCastById(movieId)
+      .then(results => {
+        setMovieCast(results);
+      })
+      .catch(err => console.log(err))
+      .finally(setIsLoading(false));
+  }, [movieId]);
 
   return (
     <SCCastList>
@@ -58,18 +44,15 @@ const MovieCast = () => {
           }) => (
             <Box
               key={cast_id}
+              as="li"
               display="flex"
               gridGap="15px"
-              as="li"
               alignItems="center"
               mb={5}
             >
               <SCImageWrapper>
                 {profile_path ? (
-                  <img
-                    src={`https://image.tmdb.org/t/p/w500${profile_path}`}
-                    alt={name}
-                  />
+                  <img src={`${IMAGE_URL}w500${profile_path}`} alt={name} />
                 ) : (
                   <img src={placeholderIMG} alt={name} />
                 )}

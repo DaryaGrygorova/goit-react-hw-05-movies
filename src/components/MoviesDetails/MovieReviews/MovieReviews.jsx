@@ -1,35 +1,28 @@
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import { IoPersonCircle } from 'react-icons/io5';
 
-import moviesAPI from 'service-api/MoviesAPI';
-import Loader from '../Loader';
+import { getMovieReviewsById } from 'service-api/MoviesAPI';
+import Loader from '../../Loader';
 
 import { SCTitle, SCSubTitle, SCText, SCReviews } from './MovieReviews.styled';
 import { Box } from 'components/Box';
 
 const MovieReviews = () => {
-  const { pathname } = useLocation();
+  const { movieId } = useParams();
   const [movieReviews, setMovieReviews] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
-  const searchPath = pathname.slice(32);
-
   useEffect(() => {
-    const getMovieReviews = searchPath => {
-      moviesAPI
-        .getMovieDetails(searchPath)
-        .then(({ results }) => {
-          setMovieReviews(results);
-        })
-        .catch(err => console.log(err))
-        .finally(setIsLoading(false));
-    };
-    if (searchPath) {
-      setIsLoading(true);
-      getMovieReviews(searchPath);
-    }
-  }, [searchPath]);
+    movieId && setIsLoading(true);
+
+    getMovieReviewsById
+      .then(({ results }) => {
+        setMovieReviews(results);
+      })
+      .catch(err => console.log(err))
+      .finally(setIsLoading(false));
+  }, [movieId]);
 
   return (
     <SCReviews>

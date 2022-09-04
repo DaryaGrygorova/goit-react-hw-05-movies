@@ -1,5 +1,5 @@
+import PropTypes from 'prop-types';
 import { toast } from 'react-toastify';
-
 import { BsSearch } from 'react-icons/bs';
 
 import { StyledForm, Input, Button } from './SearchForm.styled';
@@ -35,5 +35,9 @@ const SearchForm = ({ value, onChange, onFormSubmit }) => {
     </StyledForm>
   );
 };
-
+SearchForm.protoTypes = {
+  value: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onFormSubmit: PropTypes.func.isRequired,
+}.isRequired;
 export default SearchForm;
