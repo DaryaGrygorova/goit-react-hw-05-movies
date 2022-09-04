@@ -7,13 +7,11 @@ import { StyledForm, Input, Button } from './SearchForm.styled';
 const SearchForm = ({ value, onChange, onFormSubmit }) => {
   const onSubmitHandle = e => {
     e.preventDefault();
-
     const query = e.target.elements.searchQuery.value;
 
     if (query.trim() === '') {
       toast.warning('Enter search query!');
     }
-
     onFormSubmit(query);
   };
 
@@ -35,6 +33,7 @@ const SearchForm = ({ value, onChange, onFormSubmit }) => {
     </StyledForm>
   );
 };
+
 SearchForm.protoTypes = {
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,

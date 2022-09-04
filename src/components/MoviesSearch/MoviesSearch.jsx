@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
 import { Box } from '../Box';
@@ -7,7 +8,8 @@ import MovieItem from '../MovieItem';
 import Loader from '../Loader';
 
 import { getMoviesBySearchQuery } from 'service-api/MoviesAPI';
-import { useSearchParams } from 'react-router-dom';
+
+import { SCMovieList } from './MoviesSearch.styled';
 
 const MoviesSearch = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -17,17 +19,17 @@ const MoviesSearch = () => {
   const [movies, setMovies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
-  useEffect(() => {
-    setMovies([]);
-  }, [searchQuery]);
+  // useEffect(() => {
+  //   setMovies([]);
+  // }, [searchQuery]);
 
   useEffect(() => {
     if (searchQuery.trim() !== '') {
       setIsLoading(true);
 
       getMoviesBySearchQuery(searchQuery)
-        .then(({ data }) => {
-          setMovies([...data.results]);
+        .then(({ results }) => {
+          setMovies(results);
         })
         .catch(err => toast.error(err))
         .finally(setIsLoading(false));
@@ -51,13 +53,13 @@ const MoviesSearch = () => {
       />
       {isLoading && <Loader />}
       {!!movies?.length && !isLoading && (
-        <Box as="ul" pt={4}>
+        <SCMovieList>
           {movies.map(movie => (
-            <Box key={movie.id}>
+            <Box key={movie.id} as="li">
               <MovieItem movie={movie} />
             </Box>
           ))}
-        </Box>
+        </SCMovieList>
       )}
     </Box>
   );

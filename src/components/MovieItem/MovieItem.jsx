@@ -2,6 +2,7 @@ import { useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { IMAGE_URL } from 'service-api/MoviesAPI';
+import placeholderIMG from '../../images/placeholder.webp';
 
 import { SCNavLink, SCImageWrapper, SCText } from './MovieItem.styled';
 
@@ -17,17 +18,21 @@ const MovieItem = ({ movie }) => {
       state={location}
     >
       <SCImageWrapper>
-        <img src={`${IMAGE_URL}w500${poster_path}`} alt={title} />
+        {poster_path ? (
+          <img src={`${IMAGE_URL}w500${poster_path}`} alt={title} />
+        ) : (
+          <img src={placeholderIMG} alt={title} />
+        )}
       </SCImageWrapper>
       <SCText>{title || 'No name film'}</SCText>
     </SCNavLink>
   );
 };
 MovieItem.propTypes = {
-  movie: {
+  movie: PropTypes.shape({
     id: PropTypes.string.isRequired,
     title: PropTypes.string.isRequired,
     poster_path: PropTypes.string.isRequired,
-  }.isRequired,
+  }).isRequired,
 };
 export default MovieItem;
